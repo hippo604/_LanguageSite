@@ -1,8 +1,8 @@
 from langsite import app,db
-from langsite.models.models import Question
+from langsite.models.models import Question,QuizStatusEnum,Quiz
 from flask import render_template
 
-name='Mark'
+name='エミリー'
 
 @app.route('/')
 def index():
@@ -20,11 +20,35 @@ def answers():
 
 @app.route('/initialize')
 def initialize():
-    q1 = Question('きんようび','金曜日')
-    q2 = Question('ぎんこうにいく','銀行に行く')
-    q3 = Question('あめがふる','雨がふる')
-    db.session.add_all([q1,q2,q3])
+
+    questions = []
+    questions.append(Question('かようび','火曜日'))
+    questions.append(Question('ぎんこうにいく','銀行に行く'))
+    questions.append(Question('あめがふる','雨がふる'))
+    questions.append(Question('げつようび','月曜日'))
+    questions.append(Question('すいようび','水曜日'))
+
+    for q in questions:
+        q_search = Question.query.filter_by(question=q.question).first()
+        if q_search == None:
+            db.session.add(q)
+            db.session.commit()
+
+    qx = Question.query.filter_by(id=1).first()
+    qzx = Quiz.query.filter_by(user=1).first()
+    qx.quizzes.append(qzx)
     db.session.commit()
+
+    qx = Question.query.filter_by(id=2).first()
+    qzx = Quiz.query.filter_by(user=1).first()
+    qx.quizzes.append(qzx)
+    db.session.commit()
+
+    qx = Question.query.filter_by(id=3).first()
+    qzx = Quiz.query.filter_by(user=1).first()
+    qx.quizzes.append(qzx)
+    db.session.commit()
+
     return(render_template("basic.html",name=name))
 
 if __name__ == '__main__':
