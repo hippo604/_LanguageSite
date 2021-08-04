@@ -21,12 +21,13 @@ def answers():
 @app.route('/initialize')
 def initialize():
 
-    questions = []
-    questions.append(Question('かようび','火曜日'))
-    questions.append(Question('ぎんこうにいく','銀行に行く'))
-    questions.append(Question('あめがふる','雨がふる'))
-    questions.append(Question('げつようび','月曜日'))
-    questions.append(Question('すいようび','水曜日'))
+    questions = [Question(question='かようび',answer='火曜日')]
+    #questions.append(Question('かようび','火曜日'))
+    questions.append(Question(question='ぎんこうにいく',answer='銀行に行く'))
+    questions.append(Question(question='あめがふる',answer='雨がふる'))
+    questions.append(Question(question='げつようび',answer='月曜日'))
+    questions.append(Question(question='すいようび',answer='水曜日'))
+    questions.append(Question(question='やおやにいく',answer='八百屋に行く',comment="abc"))
 
     for q in questions:
         q_search = Question.query.filter_by(question=q.question).first()
@@ -34,20 +35,20 @@ def initialize():
             db.session.add(q)
             db.session.commit()
 
-    qx = Question.query.filter_by(id=1).first()
-    qzx = Quiz.query.filter_by(user=1).first()
-    qx.quizzes.append(qzx)
-    db.session.commit()
+    #qx = Question.query.filter_by(id=1).first()
+    #qzx = Quiz.query.filter_by(user=1).first()
+    #qx.quizzes.append(qzx)
+    #db.session.commit()
 
-    qx = Question.query.filter_by(id=2).first()
-    qzx = Quiz.query.filter_by(user=1).first()
-    qx.quizzes.append(qzx)
-    db.session.commit()
+    #qx = Question.query.filter_by(id=2).first()
+    #qzx = Quiz.query.filter_by(user=1).first()
+    #qx.quizzes.append(qzx)
+    #db.session.commit()
 
-    qx = Question.query.filter_by(id=3).first()
-    qzx = Quiz.query.filter_by(user=1).first()
-    qx.quizzes.append(qzx)
-    db.session.commit()
+    #qx = Question.query.filter_by(id=3).first()
+    #qzx = Quiz.query.filter_by(user=1).first()
+    #qx.quizzes.append(qzx)
+    #db.session.commit()
 
     return(render_template("basic.html",name=name))
 
