@@ -1,8 +1,8 @@
 from langsite import app,db
-from langsite.models.models import Question,QuizStatusEnum,Quiz
+from langsite.models.models import Question,QuizStatusEnum,Quiz,Association
 from flask import render_template
 
-name='エミリー'
+name='Thomas'
 
 @app.route('/')
 def index():
@@ -35,22 +35,18 @@ def initialize():
             db.session.add(q)
             db.session.commit()
 
-    #qx = Question.query.filter_by(id=1).first()
-    #qzx = Quiz.query.filter_by(user=1).first()
-    #qx.quizzes.append(qzx)
+    #quiz1 = Quiz()
+    #a = Association(comment = 'Association comment')
+    #question1 = Question('どようび', '土曜日')
+    #a.question = question1
+    #quiz1.questions.append(a)
+    #db.session.add_all([quiz1,a,question1])
     #db.session.commit()
 
-    #qx = Question.query.filter_by(id=2).first()
-    #qzx = Quiz.query.filter_by(user=1).first()
-    #qx.quizzes.append(qzx)
-    #db.session.commit()
+    inquiz = Quiz.query.filter_by(id=1).first().questions
 
-    #qx = Question.query.filter_by(id=3).first()
-    #qzx = Quiz.query.filter_by(user=1).first()
-    #qx.quizzes.append(qzx)
-    #db.session.commit()
 
-    return(render_template("basic.html",name=name))
+    return(render_template("basic.html",name=inquiz))
 
 if __name__ == '__main__':
     app.run(debug=True)
