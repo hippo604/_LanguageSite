@@ -11,6 +11,7 @@ def index():
 @app.route('/questions')
 def questions():
     test = Question.query.order_by(Question.id).all()
+
     return(render_template("questions.html",name=name,test=test))
 
 @app.route('/answers')
@@ -22,7 +23,6 @@ def answers():
 def initialize():
 
     questions = [Question(question='かようび',answer='火曜日')]
-    #questions.append(Question('かようび','火曜日'))
     questions.append(Question(question='ぎんこうにいく',answer='銀行に行く'))
     questions.append(Question(question='あめがふる',answer='雨がふる'))
     questions.append(Question(question='げつようび',answer='月曜日'))
@@ -35,18 +35,19 @@ def initialize():
             db.session.add(q)
             db.session.commit()
 
-    #quiz1 = Quiz()
-    #a = Association(comment = 'Association comment')
-    #question1 = Question('どようび', '土曜日')
-    #a.question = question1
-    #quiz1.questions.append(a)
-    #db.session.add_all([quiz1,a,question1])
-    #db.session.commit()
+    Quiz1 = Quiz.query.filter_by(id=1).first()
+    question_set = []
 
-    inquiz = Quiz.query.filter_by(id=1).first().questions
+    for q1q in Quiz1.questions:
+        question_set.append(q1q.question)
+
+    return(render_template("basic.html",name=question_set))
 
 
-    return(render_template("basic.html",name=inquiz))
+@app.route('/admin')
+def admin():
+    #...
+    return(render_template("admin.html"))
 
 if __name__ == '__main__':
     app.run(debug=True)

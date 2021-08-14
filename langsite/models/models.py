@@ -10,6 +10,7 @@ class Association(db.Model):
     quiz = db.relationship("Quiz", back_populates="questions")
     comment = db.Column(db.String(50))
     result = db.Column(db.String(50))
+    result_comment = db.Column(db.String(50))
 
 #https://medium.com/the-andela-way/how-to-create-django-like-choices-field-in-flask-sqlalchemy-1ca0e3a3af9d
 class QuizStatusEnum(enum.Enum):
@@ -38,6 +39,3 @@ class Question(db.Model):
 
     def __repr__(self):
         return f"Answer to '{self.question}' is '{self.answer}'."
-
-    #remark
-    
