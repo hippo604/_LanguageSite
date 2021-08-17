@@ -5,6 +5,16 @@
     <h1 class="display-5 fw-bold">管理者（かんりしゃ）</h1>
     <p class="col-md-8 fs-4">Review and add quiz questions and results.</p>
 
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <br />
+        {% for nested in form.questions %}
+            {{ nested.question_id.label }}{{ nested.question_id }}{{ nested.question.label }}{{ nested.question }}{{ nested.answer.label }}{{ nested.answer }}{{ nested.comment.label }}{{ nested.comment }}
+            <br />
+            <br />
+        {% endfor %}
+        <button>Submit</button>
+    </form>
   </div>
 </div>
 {% endblock %}

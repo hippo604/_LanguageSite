@@ -38,4 +38,4 @@ class Question(db.Model):
         self.comment = comment
 
     def __repr__(self):
-        return f"Answer to '{self.question}' is '{self.answer}'."
+        return f"Question: '{self.question}'; Answer: '{self.answer}'."
