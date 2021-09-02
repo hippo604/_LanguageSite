@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">Questions</h1>
+    <p class="col-md-8 fs-4">Here are the questions, {{ name }}さん. </p>
+    <p class="col-md-8 fs-4">Write them in your answer sheet.</p>
+    <table style="width:100%">
+      <table>
+        <th>ID</th>
+        <th>Question</th>
+        {% for nested in question_set %}
+            <tr>
+              <td>{{ nested.question_id }}</td>
+              <td>{{ nested.question }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <p>クイズが終わったら上の「答え」をクリックしてください。</p>
+  </div>
+</div>
+{% endblock %}
