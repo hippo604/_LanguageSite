@@ -28,7 +28,9 @@ class Question(db.Model):
     __tablename__ = "questions"
     id = db.Column(db.Integer,primary_key=True)
     question = db.Column(db.Text)
+    question_image = db.Column(db.Text)
     answer = db.Column(db.Text)
+    answer_image = db.Column(db.Text)
     comment = db.Column(db.Text)
     quizzes =db.relationship("Association", back_populates="question")
 

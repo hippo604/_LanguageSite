@@ -9,8 +9,16 @@
         {{ form.hidden_tag() }}
         <br />
         {% for nested in form.questions %}
-            {{ nested.question_id.label }}{{ nested.question_id }}{{ nested.question.label }}{{ nested.question }}{{ nested.answer.label }}{{ nested.answer }}{{ nested.comment.label }}{{ nested.comment }}
+            <b>{{ nested.question_id.label }}</b> {{ nested.question_id.data }} <b>{{ nested.question.label }}</b>{{ nested.question }} <b>{{ nested.answer.label }}</b> {{ nested.answer }} <b>{{ nested.result.label }}</b> {{ nested.result }} <b>{{ nested.comment.label }}</b> {{ nested.comment }} <b>{{ nested.result_comment.label }}</b> {{ nested.result_comment.data }}
             <br />
+            {% if nested.question_image.data != None %}
+              <b>{{ nested.question_image.label }}</b>{{ nested.question_image }}<img src="{{ url_for('static', filename='images/' ~ nested.question_image.data) }}" class="quizimg" alt="">
+              <br />
+            {% endif %}
+            {% if nested.answer_image.data != None %}
+              <b>{{ nested.answer_image.label }}</b>{{ nested.answer_image }}<img src="{{ url_for('static', filename='images/' ~ nested.answer_image.data) }}" class="quizimg" alt="">
+              <br />
+            {% endif %}
             <br />
         {% endfor %}
         <button>Submit</button>

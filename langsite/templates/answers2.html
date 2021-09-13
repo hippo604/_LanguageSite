@@ -4,14 +4,27 @@
   <div class="container-fluid py-5">
     <h1 class="display-5 fw-bold">Answers</h1>
     <p class="col-md-8 fs-4">{{ name }}さん、答えは以下です。</p>
-
     <form method="POST" action="">
       {{ form.hidden_tag() }}
       <br />
-      {% for nested in form.questions %}
-          {{ nested.question_id.label }}{{ nested.question_id(readonly=true) }}{{ nested.question.label }}{{ nested.question(readonly=true)  }}{{ nested.answer.label }}{{ nested.answer(readonly=true)  }}{{ nested.result.label }}{{ nested.result }}
-          <br />
-          <br />
+      {% for nested in form.questions %}<div class="quiztext">
+          <b>{{ nested.question.label }}</b> {{ nested.question.data }}
+          <br>
+          {% if nested.question_image.data != None %}
+            <img src="{{ url_for('static', filename='images/' ~ nested.question_image.data) }}" class="quizimg" alt="">
+            <br>
+          {% endif %}
+          <b>{{ nested.answer.label }}</b> {{ nested.answer.data }}
+          <br>
+          {% if nested.answer_image.data != None %}
+            <img src="{{ url_for('static', filename='images/' ~ nested.answer_image.data) }}" class="quizimg" alt="">
+            <br>
+          {% endif %}
+          <b>{{ nested.result.label }}</b> {{ nested.result }}
+          <br>
+          <b>{{ nested.result_comment.label}}</b> {{ nested.result_comment}}</div>
+          <br>
+          <br>
       {% endfor %}
       <button>Submit</button>
     </form>
