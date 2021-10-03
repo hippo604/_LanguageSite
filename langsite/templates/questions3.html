@@ -9,7 +9,7 @@
         {% for nested in question_set %}
               <!-- <td>{{ nested.question_id }}</td> -->
               <li>
-                <div class="quiztext">{{ nested.question }}</div>
+                <div class="quiztext">□{{ nested.question }}</div>
                 {% if nested.question_image %}
                   <img src="{{ nested.question_image }}" class="quizimg" alt="">
                 {% endif %}

@@ -53,7 +53,7 @@ class AdminReviewForm(FlaskForm):
     questions = FieldList(FormField(AdminQuestionForm), min_entries=3, max_entries=8)
 
 ################################################################
-name='Thomas'
+name='エミリー'
 
 ################################################################
 @app.route('/')
@@ -75,7 +75,7 @@ def questions():
 
     question_set = []
 
-    Quiz1 = Quiz.query.filter_by(id=1).first()
+    Quiz1 = Quiz.query.filter_by(id=3).first()
     for q1q2 in Quiz1.questions:
 
         question_image = q1q2.question.question_image
@@ -97,7 +97,7 @@ def answers():
 
         question_set = []
 
-        Quiz1 = Quiz.query.filter_by(id=1).first()
+        Quiz1 = Quiz.query.filter_by(id=3).first()
 
         for q1q2 in Quiz1.questions:
             question_set.append(question(q1q2.question.id, q1q2.question.question, q1q2.question.question_image, q1q2.question.answer, q1q2.question.answer_image, q1q2.result, q1q2.result_comment))
