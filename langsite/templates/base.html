@@ -18,19 +18,25 @@
       <div class="collapse navbar-collapse" id="navbarsExample02">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{{url_for('index')}}">Home</a>
+            <a class="nav-link" href="{{url_for('index')}}">ホーム</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="{{url_for('questions')}}">質問（しつもん）</a>
+          </li> -->
+          <li class="nav-item">
+            <a href="{{url_for('questions')}}" class="btn btn-primary" role="button" aria-disabled="true">質問（しつもん）</a>
           </li>
           <li class="nav-item">
             <!-- <a class="nav-link" href="{{url_for('answers')}}">Answers</a>-->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
               答え（こたえ）
             </button>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('admin')}}">管理者（かんりしゃ）</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('settings')}}">設定（せってい）</a>
           </li>
         </ul>
       </div>
@@ -53,7 +59,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-        <button type="button" class="btn btn-primary"><a href="{{url_for('answers')}}" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='green'">答えを見る</a></button>
+        <button type="button" class="btn btn-warning"><a href="{{url_for('answers')}}" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='green'">答えを見る</a></button>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 from langsite import app,db
-from langsite.models.models import Question,QuizStatusEnum,Quiz,Association
+from langsite.models.models import Question,QuizStatusEnum,Quiz,Association,Setting
 from flask import render_template, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField,FormField,FieldList,Form,HiddenField
@@ -34,7 +34,7 @@ class QuizForm(FlaskForm):
 
 #Multi-line form for the quiz (includes answers)
 class QuizAnswerForm(FlaskForm):
-    questions = FieldList(FormField(AnswerForm), min_entries=0, max_entries=8)
+    questions = FieldList(FormField(AnswerForm), min_entries=0, max_entries=14)
 
 #Single line for the admin page
 class AdminQuestionForm(Form):
@@ -52,30 +52,35 @@ class AdminReviewForm(FlaskForm):
     #quiz_name = StringField('Quiz Name')
     questions = FieldList(FormField(AdminQuestionForm), min_entries=3, max_entries=8)
 
-################################################################
-name='エミリー'
+class SettingForm(FlaskForm):
+    name = StringField('名前')
+    default_quiz = StringField('次のクイズ')
 
-################################################################
+
+def refresh():
+    global name
+    name=Setting.query.filter_by(key="name").first().value
+    global default_quiz
+    default_quiz = int(Setting.query.filter_by(key="default_quiz").first().value)
+
+refresh()
+
 @app.route('/')
 def index():
+
+    refresh()
     return(render_template("basic.html",name=name))
 
-@app.route('/images')
-def images():
-    image="bamboo-forests.jpeg"
-
-    imagelink = url_for('static', filename='images/'+image)
-
-    return(render_template("show_image.html", imagelink=imagelink))
 
 @app.route('/questions',methods=['GET','POST'])
 def questions():
 
+    refresh()
     question = namedtuple('question', ['question_id', 'question', 'question_image'])
 
     question_set = []
 
-    Quiz1 = Quiz.query.filter_by(id=3).first()
+    Quiz1 = Quiz.query.filter_by(id=default_quiz).first()
     for q1q2 in Quiz1.questions:
 
         question_image = q1q2.question.question_image
@@ -93,11 +98,12 @@ def questions():
 
 @app.route('/answers',methods=['GET','POST'])
 def answers():
+        refresh()
         question = namedtuple('question', ['question_id', 'question', 'question_image', 'answer', 'answer_image', 'result', 'result_comment'])
 
         question_set = []
 
-        Quiz1 = Quiz.query.filter_by(id=3).first()
+        Quiz1 = Quiz.query.filter_by(id=default_quiz).first()
 
         for q1q2 in Quiz1.questions:
             question_set.append(question(q1q2.question.id, q1q2.question.question, q1q2.question.question_image, q1q2.question.answer, q1q2.question.answer_image, q1q2.result, q1q2.result_comment))
@@ -114,23 +120,27 @@ def answers():
         form = QuizAnswerForm(data=data)
         if form.validate_on_submit():
             for field in form.questions:
-
                 try:
                     q_id = int(field.question_id.data)
-                    print("app.py answers attempt to determine q_id")
+                    # print("app.py answers attempt to determine q_id")
                 except ValueError:
                     pass
 
                 q_r = field.result.data
                 q_rc = field.result_comment.data
 
-                Quiz1 = Quiz.query.filter_by(id=1).first()
+                Quiz1 = Quiz.query.filter_by(id=default_quiz).first()
 
                 # Convoluted iteration through Association objects.
                 for q1q2 in Quiz1.questions:
+                    print("q1q2.question.id: " + str(q1q2.question.id) + "; q_id=" + str(q_id))
                     if q1q2.question.id == q_id:
                         q1q2.result = q_r
                         q1q2.result_comment = q_rc
+                        print("**************BEGINNING of result and comment: " )
+                        print("result: " + q_r)
+                        print("result: " + q_rc)
+                        print("**************END of question set: " )
 
                 db.session.commit()
 
@@ -140,6 +150,8 @@ def answers():
 
 @app.route('/initialize')
 def initialize():
+
+
 
     questions = [Question(question='かようび',answer='火曜日')]
     questions.append(Question(question='ぎんこうにいく',answer='銀行に行く'))
@@ -156,9 +168,25 @@ def initialize():
 
     return(render_template("basic.html",name=name))
 
-@app.route('/admin',methods=['GET','POST'], defaults={'quiz_number': 1})
+@app.route('/init_settings')
+def init_settings():
+    settings = [Setting(key='name', value="Emily")]
+    settings.append(Setting(key='default_quiz', value='0'))
+
+    for s in settings:
+        s_search = Setting.query.filter_by(key=s.key).first()
+        if s_search == None:
+            db.session.add(s)
+            db.session.commit()
+
+    return(render_template("basic.html",name="Em"))
+
+
+
+@app.route('/admin',methods=['GET','POST'], defaults={'quiz_number': default_quiz})
 @app.route('/admin/<quiz_number>',methods=['GET','POST'])
 def admin(quiz_number):
+    refresh()
 
     question = namedtuple('question', ['question_id', 'question', 'question_image', 'answer', 'answer_image', 'result', 'comment', 'result_comment'])
 
@@ -204,6 +232,21 @@ def admin(quiz_number):
         db.session.commit()
 
     return(render_template("admin.html", form=form, name=name))
+
+@app.route('/settings',methods=['GET','POST'])
+def settings():
+
+    refresh()
+    # name = Setting.query.get_or_404("Name")
+    # name = Setting.query.filter_by(key="name").first().value
+    # def_quiz = Setting.query.filter_by(key="default_quiz").first().value
+
+    return(render_template("settings.html", name=name))
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

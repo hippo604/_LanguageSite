@@ -1,6 +1,11 @@
 from langsite import db
 import enum
 
+class Setting(db.Model):
+    __tablename__ = "settings"
+    id = db.Column(db.Integer,primary_key=True)
+    key = db.Column(db.Text)
+    value = db.Column(db.Text)
 
 class Association(db.Model):
     __tablename__ = 'association'
